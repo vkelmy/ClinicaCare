@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.realmKotlin)
+    alias(libs.plugins.googleDaggerHiltAndroid)
+    alias(libs.plugins.googleDevtoolsKsp)
 }
 
 android {
@@ -30,6 +33,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -66,4 +70,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.androidx.hilt.compiler)
+
+    implementation(libs.library.base)
+    implementation(libs.kotlinx.coroutines.core)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
