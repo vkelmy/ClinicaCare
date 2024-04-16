@@ -2,8 +2,8 @@ package com.example.clinicacare.core.data.repository
 
 import android.util.Log
 import com.example.clinicacare.core.data.models.Appointment
-import com.example.clinicacare.core.data.models.Client
-import com.example.clinicacare.core.data.models.Professional
+import com.example.clinicacare.core.data.models.User
+import de.nycode.bcrypt.verify
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
@@ -12,47 +12,44 @@ import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 
+
 class ClinicRepositoryImpl(private val realm: Realm): ClinicRepository {
-    override suspend fun insertClient(client: Client) {
-        realm.write { copyToRealm(client, UpdatePolicy.ALL) }
-    }
 
-    override fun getClient(id: ObjectId): Flow<Client> {
-        return realm.query<Client>(query = "_id == $0", id).asFlow().map { it.list.first() }
-    }
+    override suspend fun login(email: String, password: String): String {
+        val getUser = realm.query<User>(query = "email == $0", email).first().find()
+        val checkUserPass = getUser?.password?.let { verify(password, it) }
 
-    override fun getAllClients(): Flow<List<Client>> {
-        return realm.query<Client>().asFlow().map { it.list }
-    }
-
-    override suspend fun insertProfessional(professional: Professional) {
-        realm.write { copyToRealm(professional) }
-    }
-
-    override fun getProfessional(id: ObjectId): Flow<Professional> {
-        return realm.query<Professional>(query = "_id == $0", id).asFlow().map { it.list.first() }
-    }
-
-    override fun getAllProfessionals(): Flow<List<Professional>> {
-        return realm.query<Professional>().asFlow().map { it.list }
-    }
-
-    override suspend fun deleteProfessionalAccount(id: ObjectId) {
-        realm.write {
-            val professional = query<Professional>(query = "_id == $0", id).first().find()
-            try {
-                professional?.let { delete(it) }
-            } catch (e: Exception) {
-                Log.d("Error on deleting account:", "${e.message}")
-            }
+        val userId = getUser?._id.toString().split("BsonObjectId(", ")")[1]
+        return if (checkUserPass == true) {
+            userId
+        } else {
+            ""
         }
     }
 
-    override suspend fun deleteClientAccount(id: ObjectId) {
+    override suspend fun register(user: User) {
+        realm.write { copyToRealm(user, UpdatePolicy.ALL) }
+    }
+
+    override fun getUser(id: ObjectId): Flow<User> {
+        return realm.query<User>(query = "_id == $0", id).asFlow().map { it.list.first() }
+    }
+
+    override fun getPatients(): Flow<List<User>> {
+        val patient = "patient"
+        return realm.query<User>(query = "role == $0", patient).asFlow().map { it.list }
+    }
+
+    override fun getProfessionals(): Flow<List<User>> {
+        val professional = "professional"
+        return realm.query<User>(query = "role == $0", professional).asFlow().map { it.list }
+    }
+
+    override suspend fun deleteAccount(id: ObjectId) {
         realm.write {
-            val client = query<Client>(query = "_id == $0", id).first().find()
+            val user = query<User>(query = "_id == $0", id).first().find()
             try {
-                client?.let { delete(it) }
+                user?.let { delete(it) }
             } catch (e: Exception) {
                 Log.d("Error on deleting account:", "${e.message}")
             }

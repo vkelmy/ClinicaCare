@@ -1,29 +1,24 @@
 package com.example.clinicacare.core.data.repository
 
 import com.example.clinicacare.core.data.models.Appointment
-import com.example.clinicacare.core.data.models.Client
-import com.example.clinicacare.core.data.models.Professional
+import com.example.clinicacare.core.data.models.User
 import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 
 
 interface ClinicRepository {
 
-    suspend fun insertClient(client: Client)
+    suspend fun login(email: String, password: String): String
 
-    fun getClient(id: ObjectId): Flow<Client>
+    suspend fun register(user: User)
 
-    fun getAllClients(): Flow<List<Client>>
+    fun getUser(id: ObjectId): Flow<User>
 
-    suspend fun insertProfessional(professional: Professional)
+    fun getPatients(): Flow<List<User>>
 
-    fun getProfessional(id: ObjectId): Flow<Professional>
+    fun getProfessionals(): Flow<List<User>>
 
-    fun getAllProfessionals(): Flow<List<Professional>>
-
-    suspend fun deleteProfessionalAccount(id: ObjectId)
-
-    suspend fun deleteClientAccount(id: ObjectId)
+    suspend fun deleteAccount(id: ObjectId)
 
     suspend fun insertAppointment(appointment: Appointment)
 

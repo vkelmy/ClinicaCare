@@ -71,13 +71,26 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Dagger - Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.androidx.hilt.compiler)
 
+    // Realm + coroutines
     implementation(libs.library.base)
     implementation(libs.kotlinx.coroutines.core)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.nycode.bcrypt)
+
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
+
+    // Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+
+    // Extended Icons
+    implementation(libs.androidx.material.icons.extended)
 }
