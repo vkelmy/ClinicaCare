@@ -18,12 +18,15 @@ import androidx.compose.material.icons.filled.PermIdentity
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,6 +43,7 @@ import com.example.clinicacare.presentation.auth.util.InputCpfFormatted
 import com.example.clinicacare.presentation.auth.util.InputDateFormatted
 import com.example.clinicacare.presentation.auth.util.InputNumberFormatted
 import com.example.clinicacare.presentation.auth.util.MasksDefaults
+import kotlinx.coroutines.launch
 
 @Composable
 fun Signup(
@@ -59,6 +63,9 @@ fun Signup(
     val sex = authState.sex
     val number = authState.number
     val cpf = authState.cpf
+    val isEmailTaken = authState.isEmailTaken
+
+    val scope = rememberCoroutineScope()
 
     val isFieldsNotEmpty = name.isNotEmpty() && birthdate.isNotEmpty() &&
             email.isNotEmpty() && password.isNotEmpty() &&
@@ -80,7 +87,7 @@ fun Signup(
                 text = "Cadastrar",
                 modifier = Modifier
                     .padding(vertical = defaultPadding)
-                    .align(alignment = Alignment.Start)
+                    .align(alignment = Alignment.CenterHorizontally)
             )
             LoginTextField(
                 value = name,
@@ -149,8 +156,17 @@ fun Signup(
                 labelText = "Email",
                 leadingIcon = Icons.Filled.Email,
                 keyboardType = KeyboardType.Email,
-                modifier = Modifier.fillMaxWidth()
-            )
+                modifier = Modifier.fillMaxWidth(),
+                isError = isEmailTaken
+            ) {
+                if (isEmailTaken) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Esse email já existe!",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
             Spacer(Modifier.height(itemSpacing))
             LoginTextField(
                 value = password,
@@ -166,13 +182,21 @@ fun Signup(
             Spacer(Modifier.height(itemSpacing))
             Button(
                 onClick = {
-                    authViewModel.onEvent(AuthEvent.OnRegister)
-                    navController.navigate(Screen.PatientScreen.route)
+                    scope.launch {
+                        val isEmailAlreadyTaken = authViewModel.registerUser()
+                        if (!isEmailAlreadyTaken) navController.navigate(Screen.PatientScreen.route)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp, bottom = 5.dp),
-                enabled = isFieldsNotEmpty
+                enabled = isFieldsNotEmpty,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+                    disabledContentColor = MaterialTheme.colorScheme.primary
+                )
             ) {
                 Text("Cadastrar", modifier = Modifier.padding(4.dp))
             }
@@ -189,7 +213,7 @@ fun Signup(
                         navController.navigate(Screen.LoginScreen.route)
                     }
                 ) {
-                    Text("Entrar")
+                    Text("Entrar", color = MaterialTheme.colorScheme.secondary)
                 }
             }
 

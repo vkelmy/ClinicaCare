@@ -36,11 +36,11 @@ class NavigationViewModel @Inject constructor(
             datastoreRepository.readUserIdFromDataStore().collect {
                 repository.getUser(BsonObjectId(it)).collect { role ->
                     when (role.role) {
-                        "patient" -> _startDestination.value = Screen.PatientScreen.route
+                        "Paciente" -> _startDestination.value = Screen.PatientScreen.route
 
-                        "professional" -> _startDestination.value = Screen.ProfessionalScreen.route
+                        "Doutor" -> _startDestination.value = Screen.ProfessionalScreen.route
 
-                        "admin" -> _startDestination.value = Screen.DashboardScreen.route
+                        "Admin" -> _startDestination.value = Screen.DashboardScreen.route
                     }
                 }
             }

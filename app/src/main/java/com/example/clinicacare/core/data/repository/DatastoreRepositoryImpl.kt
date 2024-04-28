@@ -46,7 +46,7 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
-                emit((pref[userIdKey] ?: ""))
+                pref[userIdKey]?.let { emit(it) }
             }
         }
     }

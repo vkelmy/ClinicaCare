@@ -12,11 +12,13 @@ interface ClinicRepository {
 
     suspend fun register(user: User)
 
+    suspend fun updateUser(user: User)
+
     fun getUser(id: ObjectId): Flow<User>
 
-    fun getPatients(): Flow<List<User>>
+    suspend fun getUsers(userType: String?, query: String?): Flow<List<User>>
 
-    fun getProfessionals(): Flow<List<User>>
+    suspend fun checkUserEmail(email: String): Boolean
 
     suspend fun deleteAccount(id: ObjectId)
 
@@ -24,8 +26,8 @@ interface ClinicRepository {
 
     fun getAppointment(id: ObjectId): Flow<Appointment>
 
-    fun getDailyAppointments(): Flow<List<Appointment>>
+    suspend fun getDailyAppointments(): Flow<List<Appointment>>
 
-    fun getMonthlyAppointments(): Flow<List<Appointment>>
+    suspend fun getMonthlyAppointments(): Flow<List<Appointment>>
 
 }

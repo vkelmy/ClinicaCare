@@ -10,7 +10,9 @@ data class AuthState (
     val cpf: String = "",
     val isChecked: Boolean = false,
     var routePath: String = "",
-    var userRole: String = "",
     var userId: String = "",
-    var isUserLogged: Boolean = false
+    var isUserLogged: Boolean = false,
+    var isEmailTaken: Boolean = false,
+    var showPassword: Boolean = false,
+    var emailOrPasswordIncorrect: Boolean = false
 )

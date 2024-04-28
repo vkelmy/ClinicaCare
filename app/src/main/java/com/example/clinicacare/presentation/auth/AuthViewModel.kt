@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,17 +50,16 @@ class AuthViewModel @Inject constructor(
             is AuthEvent.OnCpfChange -> {
                 _authState.update { it.copy(cpf = event.cpf) }
             }
-            is AuthEvent.OnRegister -> {
-                registerUser()
-            }
             is AuthEvent.OnCheckRememberMe -> {
                 _authState.update { it.copy(isChecked = event.checked) }
             }
         }
     }
 
-    private fun registerUser() {
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun registerUser(): Boolean {
+        val checkUserEmail = repository.checkUserEmail(_authState.value.email)
+        _authState.update { it.copy(isEmailTaken = checkUserEmail) }
+        if (!checkUserEmail) {
             val newUser = User().apply {
                 email = _authState.value.email
                 password = hash(_authState.value.password, 12)
@@ -75,7 +73,9 @@ class AuthViewModel @Inject constructor(
             writeOnDatastore(userId)
             repository.register(user = newUser)
         }
+        return checkUserEmail
     }
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun login(): String {
@@ -86,25 +86,24 @@ class AuthViewModel @Inject constructor(
         result.invokeOnCompletion {
             if (it == null) {
                 if (result.getCompleted().isNotEmpty()) {
-                    resetUserCredentials()
-                    updateUserCredentials(result.getCompleted())
+                    val userId = result.getCompleted().split("-")[0]
+                    updateUserCredentials(userId)
                 } else {
-                    resetUserCredentials()
+                    _authState.update { credentials -> credentials.copy(emailOrPasswordIncorrect = true) }
                 }
             }
         }
         if (_authState.value.userId.isNotEmpty()) {
-            if (_authState.value.isChecked) keepLogged()
-
-            writeOnDatastore(_authState.value.userId)
-            val getUserRole = repository.getUser(ObjectId(_authState.value.userId))
-            viewModelScope.launch(Dispatchers.IO) {
-                getUserRole.collect {
-                    selectRoutePath(it.role)
-                }
+            if (_authState.value.isChecked) {
+                keepLogged()
             }
+            writeOnDatastore(_authState.value.userId)
+
+            val userRole = result.getCompleted().split("-")[1]
+
+            selectRoutePath(userRole)
         }
-        
+
         return if (_authState.value.isUserLogged) _authState.value.routePath else ""
     }
 
@@ -115,11 +114,6 @@ class AuthViewModel @Inject constructor(
     private fun updateUserCredentials(id: String) {
         _authState.update { it.copy(userId = id) }
         _authState.update { logged -> logged.copy(isUserLogged = true) }
-    }
-
-    private fun resetUserCredentials() {
-        _authState.update { id -> id.copy(userId = "") }
-        _authState.update { logged -> logged.copy(isUserLogged = false) }
     }
 
     private fun writeOnDatastore(id: String) {
@@ -136,9 +130,9 @@ class AuthViewModel @Inject constructor(
 
     private fun selectRoutePath(route: String) {
         when (route) {
-            "patient" -> _authState.update { it.copy(routePath = Screen.PatientScreen.route) }
-            "professional" -> _authState.update { it.copy(routePath = Screen.ProfessionalScreen.route) }
-            "admin" -> _authState.update { it.copy(routePath = Screen.DashboardScreen.route) }
+            "Paciente" -> _authState.update { it.copy(routePath = Screen.PatientScreen.route) }
+            "Doutor" -> _authState.update { it.copy(routePath = Screen.ProfessionalScreen.route) }
+            "Admin" -> _authState.update { it.copy(routePath = Screen.DashboardScreen.route) }
         }
     }
 }

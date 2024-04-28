@@ -9,5 +9,4 @@ sealed class AuthEvent {
     data class OnNumberChange(val number: String): AuthEvent()
     data class OnCpfChange(val cpf: String): AuthEvent()
     data class OnCheckRememberMe(val checked: Boolean): AuthEvent()
-    object OnRegister: AuthEvent()
 }

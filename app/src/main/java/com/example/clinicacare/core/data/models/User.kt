@@ -11,7 +11,7 @@ class User : RealmObject {
     var _id: ObjectId = ObjectId.invoke()
     var email: String = ""
     var password: ByteArray = ByteArray(1)
-    var role: String = "patient"
+    var role: String = "Paciente"
     var name: String = ""
     var birthdate: String = ""
     var sex: String = ""
