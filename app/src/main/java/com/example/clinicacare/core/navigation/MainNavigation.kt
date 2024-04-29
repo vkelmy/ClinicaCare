@@ -18,8 +18,8 @@ import com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_home
 import com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_patients.DashPatient
 import com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_patients.components.PatientInfo
 import com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_settings.DashSettings
+import com.example.clinicacare.presentation.doctor.Doctor
 import com.example.clinicacare.presentation.patient.Patient
-import com.example.clinicacare.presentation.doctor.Professional
 
 @Composable
 fun MainNavigation(
@@ -41,7 +41,7 @@ fun MainNavigation(
         }
 
         composable(route = Screen.ProfessionalScreen.route) {
-            Professional(navController = navController)
+            Doctor(navController = navController)
         }
 
         composable(route = Screen.DashboardScreen.route) {

@@ -35,7 +35,8 @@ fun AdminInfo(
     adminViewModel: DashAdminViewModel = hiltViewModel()
 ) {
 
-    val admin by adminViewModel.admin.collectAsState()
+    val adminState by adminViewModel.adminState.collectAsState()
+    val admin = adminState.admin
 
     Scaffold(
         modifier = Modifier

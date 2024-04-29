@@ -54,14 +54,12 @@ class ClinicRepositoryImpl(private val realm: Realm): ClinicRepository {
     override suspend fun getUsers(userType: String?, query: String?): Flow<List<User>> {
         var users = emptyFlow<List<User>>()
         realm.write {
-            if (query?.isNotEmpty() == true) {
-                users =
-                    realm.query<User>(query = "role == $0 AND name CONTAINS[c] $1", userType, query)
-                        .sort("_id", Sort.DESCENDING).asFlow().map { it.list }
+            users = if (query?.isNotEmpty() == true) {
+                realm.query<User>(query = "role == $0 AND name CONTAINS[c] $1", userType, query)
+                    .sort("_id", Sort.DESCENDING).asFlow().map { it.list }
             } else {
-                users =
-                    realm.query<User>(query = "role == $0", userType)
-                        .sort("_id", Sort.DESCENDING).asFlow().map { it.list }
+                realm.query<User>(query = "role == $0", userType)
+                    .sort("_id", Sort.DESCENDING).asFlow().map { it.list }
             }
         }
         return users
@@ -95,7 +93,7 @@ class ClinicRepositoryImpl(private val realm: Realm): ClinicRepository {
         val formattedDate = "$formatDay/$formatMonth/$year"
         var dailyAppointments = emptyFlow<List<Appointment>>()
         realm.write {
-            dailyAppointments = realm.query<Appointment>(query = "date CONTAINS $0", formattedDate).asFlow().map { it.list }
+            dailyAppointments = realm.query<Appointment>(query = "date == $0", formattedDate).asFlow().map { it.list }
         }
         return dailyAppointments
     }
