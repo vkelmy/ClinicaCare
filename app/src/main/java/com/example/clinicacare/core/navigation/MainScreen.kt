@@ -20,7 +20,9 @@ import com.example.clinicacare.presentation.dashboard.bottom_nav_bar.BottomNavBa
 import com.example.clinicacare.presentation.dashboard.bottom_nav_bar.provideBottomNavItems
 
 @Composable
-fun MainScreen(startDestination: String) {
+fun MainScreen(
+    startDestination: String
+) {
 
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }

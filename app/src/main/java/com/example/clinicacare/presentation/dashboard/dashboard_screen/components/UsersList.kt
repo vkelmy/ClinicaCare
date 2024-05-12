@@ -55,7 +55,7 @@ fun UsersList(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        itemsIndexed(users) { index, user ->
+        itemsIndexed(users) { _, user ->
             val id = user._id.toString().split("BsonObjectId(", ")")[1]
             UserItem(
                 user = user,

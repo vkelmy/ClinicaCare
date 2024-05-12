@@ -22,11 +22,11 @@ interface ClinicRepository {
 
     suspend fun deleteAccount(id: ObjectId)
 
-    suspend fun insertAppointment(appointment: Appointment)
+    suspend fun insertAppointment(appointment: Appointment, doctor: String, patient: String)
 
     fun getAppointment(id: ObjectId): Flow<Appointment>
 
-    suspend fun getDailyAppointments(): Flow<List<Appointment>>
+    suspend fun getDailyAppointments(date: String? = null): Flow<List<Appointment>>
 
     suspend fun getMonthlyAppointments(): Flow<List<Appointment>>
 

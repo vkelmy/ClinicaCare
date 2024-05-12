@@ -8,7 +8,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 class InputDateFormatted() : VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val cpfMask = text.text.mapIndexed { index, c ->
+        val dateMask = text.text.mapIndexed { index, c ->
             when (index) {
                 1 -> "$c/"
                 3 -> "$c/"
@@ -17,7 +17,7 @@ class InputDateFormatted() : VisualTransformation {
         }.joinToString(separator = "")
 
         return TransformedText(
-            AnnotatedString(cpfMask),
+            AnnotatedString(dateMask),
             DateOffsetMapping
         )
     }

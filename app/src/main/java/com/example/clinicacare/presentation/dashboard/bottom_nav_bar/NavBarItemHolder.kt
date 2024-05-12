@@ -8,7 +8,6 @@ data class NavBarItemHolder(
     val icon: Int,
     val route: String
 )
-
 fun provideBottomNavItems() = listOf(
     NavBarItemHolder(
         "",
@@ -29,5 +28,5 @@ fun provideBottomNavItems() = listOf(
         "",
         R.drawable.settings,
         Screen.DashSettingsScreen.route
-    ),
+    )
 )

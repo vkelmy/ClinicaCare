@@ -76,22 +76,31 @@ class ClinicRepositoryImpl(private val realm: Realm): ClinicRepository {
         }
     }
 
-    override suspend fun insertAppointment(appointment: Appointment) {
-        realm.write { copyToRealm(appointment) }
+    override suspend fun insertAppointment(appointment: Appointment, doctor: String, patient: String) {
+        realm.write {
+            val doctorId = query<User>(query = "_id == $0", ObjectId(doctor)).first().find()
+            val patientId = query<User>(query = "_id == $0", ObjectId(patient)).first().find()
+            appointment.enrolledUsers.addAll(listOf(doctorId!!, patientId!!))
+            copyToRealm(appointment, UpdatePolicy.ALL)
+        }
     }
 
     override fun getAppointment(id: ObjectId): Flow<Appointment> {
         return realm.query<Appointment>(query = "_id == $0", id).asFlow().map { it.list.first() }
     }
 
-    override suspend fun getDailyAppointments(): Flow<List<Appointment>> {
-        val day = LocalDate.now().dayOfMonth
-        val formatDay = String.format("%02d", day)
-        val month = LocalDate.now().monthValue
-        val formatMonth = String.format("%02d", month)
-        val year = LocalDate.now().year
-        val formattedDate = "$formatDay/$formatMonth/$year"
+    override suspend fun getDailyAppointments(date: String?): Flow<List<Appointment>> {
         var dailyAppointments = emptyFlow<List<Appointment>>()
+        val formattedDate = if (date == null) {
+            val day = LocalDate.now().dayOfMonth
+            val formatDay = String.format("%02d", day)
+            val month = LocalDate.now().monthValue
+            val formatMonth = String.format("%02d", month)
+            val year = LocalDate.now().year
+            "$formatDay/$formatMonth/$year"
+        } else {
+            date
+        }
         realm.write {
             dailyAppointments = realm.query<Appointment>(query = "date == $0", formattedDate).asFlow().map { it.list }
         }

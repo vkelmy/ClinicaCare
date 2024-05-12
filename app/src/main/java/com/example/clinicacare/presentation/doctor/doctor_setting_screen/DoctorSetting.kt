@@ -1,4 +1,4 @@
-package com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_settings
+package com.example.clinicacare.presentation.doctor.doctor_setting_screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,16 +32,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clinicacare.core.navigation.Screen
-import com.example.clinicacare.presentation.dashboard.dashboard_screen.dash_settings.components.SettingIcon
+import com.example.clinicacare.presentation.doctor.components.DoctorSettingIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashSettings(
+fun DoctorSetting(
     navController: NavController,
-    settingViewModel: SettingViewModel = hiltViewModel()
+    doctorSettingViewModel: DoctorSettingViewModel = hiltViewModel()
 ) {
 
-    val user by settingViewModel.user.collectAsState()
+    val user by doctorSettingViewModel.user.collectAsState()
 
     Scaffold(
         modifier = Modifier
@@ -69,7 +69,9 @@ fun DashSettings(
         ) {
 
             Column(
-                Modifier.fillMaxWidth().padding(bottom = 7.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 7.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -85,42 +87,43 @@ fun DashSettings(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Mudar senha",
                 onClick = { navController.navigate(Screen.ResetPassword.route) },
                 trailingIcon = Icons.Filled.Lock,
                 isResetPass = true
             )
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Nos avalie",
                 trailingIcon = Icons.Filled.StarRate
             )
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Versão",
                 "1.0.0"
             )
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Política de privacidade",
                 trailingIcon = Icons.Filled.ChevronRight
             )
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Sobre nós",
                 trailingIcon = Icons.Filled.ChevronRight
             )
             Spacer(modifier = Modifier.height(8.dp))
-            SettingIcon(
+            DoctorSettingIcon(
                 "Sair",
                 trailingIcon = Icons.AutoMirrored.Filled.Logout,
                 isLogout = true,
                 onClick = {
-                    settingViewModel.logout()
+                    doctorSettingViewModel.logout()
                     navController.navigate(Screen.LoginScreen.route)
                 }
             )
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
