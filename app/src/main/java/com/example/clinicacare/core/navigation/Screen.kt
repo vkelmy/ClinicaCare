@@ -15,6 +15,7 @@ sealed class Screen(val route: String) {
     data object PatientInfoScreen: Screen("patientInfo")
 
     data object PatientScreen: Screen("patient")
+    data object PatientAddAppointmentScreen: Screen("patientAddAppointment")
 
     data object ResetPassword: Screen("resetPassword")
 
