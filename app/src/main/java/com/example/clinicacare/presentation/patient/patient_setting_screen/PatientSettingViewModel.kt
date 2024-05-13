@@ -1,4 +1,4 @@
-package com.example.clinicacare.presentation.doctor.doctor_setting_screen
+package com.example.clinicacare.presentation.patient.patient_setting_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class DoctorSettingViewModel @Inject constructor(
+class PatientSettingViewModel @Inject constructor(
     private val datastoreRepository: DatastoreRepository,
     private val repo: ClinicRepository
 ): ViewModel() {

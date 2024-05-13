@@ -1,11 +1,13 @@
-package com.example.clinicacare.presentation.doctor.components
+package com.example.clinicacare.presentation.patient.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -27,7 +29,7 @@ import androidx.navigation.NavController
 import com.example.clinicacare.core.navigation.Screen
 
 @Composable
-fun DropDownMenu(
+fun PatientDropDownMenu(
     navController: NavController
 ) {
 
@@ -55,15 +57,15 @@ fun DropDownMenu(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = "Histórico",
+                        text = "Marcar",
                         fontSize = 17.sp
                     )
                 },
                 onClick = {
-                    navController.navigate(Screen.PatientHistoryScreen.route)
+                    navController.navigate(Screen.PatientAddAppointmentScreen.route)
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.History, contentDescription = null)
+                    Icon(Icons.Default.CalendarMonth, contentDescription = "Add new appointment")
                 }
             )
             DropdownMenuItem(
@@ -74,7 +76,7 @@ fun DropDownMenu(
                     )
                 },
                 onClick = {
-                    navController.navigate(Screen.DoctorSetting.route)
+                    navController.navigate(Screen.PatientSetting.route)
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Settings, contentDescription = null)

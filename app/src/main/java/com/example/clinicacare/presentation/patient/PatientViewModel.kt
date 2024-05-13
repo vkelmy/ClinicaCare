@@ -9,12 +9,10 @@ import com.example.clinicacare.presentation.patient.event.PatientEvent
 import com.example.clinicacare.presentation.patient.state.PatientState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
 

@@ -26,6 +26,7 @@ import com.example.clinicacare.presentation.doctor.patient_history_screen.patien
 import com.example.clinicacare.presentation.doctor.return_screen.AppointmentReturn
 import com.example.clinicacare.presentation.patient.Patient
 import com.example.clinicacare.presentation.patient.PatientAddAppointment
+import com.example.clinicacare.presentation.patient.patient_setting_screen.PatientSetting
 
 @Composable
 fun MainNavigation(
@@ -153,7 +154,9 @@ fun MainNavigation(
         composable(route = Screen.PatientAddAppointmentScreen.route) {
             PatientAddAppointment(navController = navController)
         }
-
+        composable(route = Screen.PatientSetting.route) {
+            PatientSetting(navController = navController)
+        }
 
         composable(route = Screen.ResetPassword.route) {
             ResetPassword(navController = navController)

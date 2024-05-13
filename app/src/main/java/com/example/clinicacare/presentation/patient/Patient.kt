@@ -46,6 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clinicacare.core.data.models.Appointment
 import com.example.clinicacare.core.navigation.Screen
+import com.example.clinicacare.presentation.patient.components.PatientDropDownMenu
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -81,22 +82,7 @@ fun Patient(
                     )
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            navController.navigate(Screen.PatientAddAppointmentScreen.route)
-                        },
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.CalendarMonth,
-                            contentDescription = "Add new appointment",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .size(50.dp, 50.dp)
-                                .background(MaterialTheme.colorScheme.secondary, CircleShape)
-                                .padding(8.dp)
-                        )
-                    }
+                    PatientDropDownMenu(navController = navController)
                 }
             )
         }
