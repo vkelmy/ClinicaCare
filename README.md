@@ -1,5 +1,5 @@
 # ClinicaCare
-An app for booking medical appointments build with jetpack compose, kotlin and MVVM architecture.
+An app for booking medical appointments divided in three main parts (Doctor, Patient and Admin), build with jetpack compose, kotlin and MVVM architecture.
 
 ## Built With
 - [Kotlin](https://kotlinlang.org/) - Official programming language for Android development.
@@ -15,9 +15,13 @@ You need to have [Android Studio](https://developer.android.com/studio/preview) 
 
 
 ## Preview
+
+### Admin App
 <img src="screenshots/admin-01.jpg" alt="admin"> <img src="screenshots/admin-02.jpg" alt="admin"> <img src="screenshots/admin-03.jpg" alt="admin">
 <img src="screenshots/admin-04.jpg" alt="admin"> <img src="screenshots/admin-05.jpg" alt="admin">
 
+### Doctor App
 <img src="screenshots/doctor-01.jpg" alt="doctor"> <img src="screenshots/doctor-02.jpg" alt="doctor">
 
+### Patient App
 <img src="screenshots/patient-01.jpg" alt="patient"> <img src="screenshots/patient-02.jpg" alt="patient">
