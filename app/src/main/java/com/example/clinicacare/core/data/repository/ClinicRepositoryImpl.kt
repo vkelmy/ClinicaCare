@@ -19,12 +19,16 @@ class ClinicRepositoryImpl(private val realm: Realm): ClinicRepository {
 
     override suspend fun login(email: String, password: String): String {
         val getUser = realm.query<User>(query = "email == $0", email).first().find()
-        val checkUserPass = getUser?.password?.let { verify(password, it) }
+        var checkUserPass = false
+        var response = ""
+        if (getUser != null) {
+            checkUserPass = verify(password, getUser.password)
+            val userId = getUser._id.toString().split("BsonObjectId(", ")")[1]
+            val userRole = getUser.role
+            response = "$userId-$userRole"
+        }
 
-        val userId = getUser?._id.toString().split("BsonObjectId(", ")")[1]
-        val userRole = getUser?.role
-        val response = "$userId-$userRole"
-        return if (checkUserPass == true) {
+        return if (checkUserPass) {
             response
         } else {
             ""
