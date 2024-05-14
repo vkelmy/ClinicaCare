@@ -80,7 +80,7 @@ fun PatientAddAppointment(
         containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.4f),
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Retorno", fontSize = 27.sp, color = MaterialTheme.colorScheme.onPrimary) },
+                title = { Text(text = "Agendar consulta", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onPrimary) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent
                 )
